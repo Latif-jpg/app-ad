@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouverture de Challenger...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        p { color: #aaa; margin-bottom: 30px; }
+        .btn {
+            background-color: #FF4500;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        .btn:active { transform: scale(0.95); }
+        .secondary {
+            background-color: transparent;
+            border: 2px solid #333;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://raw.githubusercontent.com/boutique-challenger/assets/main/logo.png" alt="Challenger" class="logo" id="appLogo">
+    
+    <h1>Ouverture de Challenger</h1>
+    <p id="status">Redirection en cours...</p>
+
+    <a href="#" id="openBtn" class="btn">Ouvrir l'application</a>
+    <br>
+    <a href="https://challenger.bf/download" class="btn secondary">Pas encore l'application ?</a>
+
+    <script>
+        function getQueryParams() {
+            const params = {};
+            const search = window.location.search.substring(1);
+            if (search) {
+                search.split('&').forEach(pair => {
+                    const [key, value] = pair.split('=');
+                    params[key] = decodeURIComponent(value);
+                });
+            }
+            return params;
+        }
+
+        const params = getQueryParams();
+        let appUrl = "challenger://";
+
+        if (params.challengeId) {
+            appUrl += "?challengeId=" + params.challengeId;
+        } else if (params.user) {
+            appUrl += "profile?user=" + params.user;
+        }
+
+        document.getElementById('openBtn').href = appUrl;
+
+        // Tentative de redirection automatique
+        function tryRedirect() {
+            document.getElementById('status').innerText = "Si l'application ne s'ouvre pas, clique sur le bouton ci-dessous.";
+            window.location.href = appUrl;
+        }
+
+        // Exécuter après un petit délai pour laisser la page charger
+        setTimeout(tryRedirect, 500);
+    </script>
+</body>
+</html>
